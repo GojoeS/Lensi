@@ -1,3 +1,4 @@
+
 import PostFeed from "@/components/forms/PostFeed";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
@@ -12,6 +13,8 @@ async function Page(){
   const userInfo = await fetchUser(user.id)
 
   if (!userInfo?.onboarded) redirect('/onboarding')
+
+  const plainUserInfo = JSON.parse(JSON.stringify(userInfo));
 
   return (
     <>

@@ -10,3 +10,8 @@ export const CommentValidation = z.object({
   comment: z.string().min(1).max(200),
   accountId: z.string()
 })
+
+export const ReplyValidation = z.object({
+  reply: z.string().min(1).max(200),
+  accountId: z.string()
+})

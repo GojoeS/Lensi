@@ -1,7 +1,7 @@
 "use client"
 
 import { useUploadThing } from "@/lib/uploadthing"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -11,18 +11,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Textarea } from "@/components/ui/textarea"
 import * as z from 'zod'
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { createPost } from "@/lib/actions/post.action"
 
-interface PostProps{
-  post:{
-    objectId: string,
-    image: string,
-    caption: string,
-  }
-}
 
 const PostFeed = ({userId} : {userId: string}) => {
 
-  const [file, setfile] = useState<File[]>([])
+  const [files, setFiles] = useState<File[]>([])
   const { startUpload } = useUploadThing("media")
   const pathname = usePathname()
   const router = useRouter()
@@ -33,12 +28,39 @@ const PostFeed = ({userId} : {userId: string}) => {
       caption:"",
       accountId: userId,
       image: "",
+      tag: "",
     }
   })
 
-  const onSubmit = async(values: z.infer<typeof PostValidation>) => {
-    await createPost({
+  const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value:String) => void) =>{
+    e.preventDefault();
 
+    const fileReader = new FileReader();
+
+    if(e.target.files && e.target.files.length > 0){
+      const file = e.target.files[0];
+
+      setFiles(Array.from(e.target.files))
+
+      if(!file.type.includes("image")) return
+
+      fileReader.onload = async(e) => {
+        const imageDataUrl = e.target?.result?.toString() || "";
+        fieldChange(imageDataUrl)
+
+      }
+
+      fileReader.readAsDataURL(file)
+    }
+  }
+
+  const onSubmit = async(values: z.infer<typeof PostValidation>) => {
+    await createPost({ 
+      image: values.image, 
+      caption: values.caption, 
+      tag:"",
+      author: userId, 
+      path: pathname,
     })
   }
 
@@ -46,7 +68,27 @@ const PostFeed = ({userId} : {userId: string}) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
+        className="mt-10"
       >
+        <FormField 
+          control={form.control}
+          name="image"
+          render={({field}) => (
+            <FormItem>
+              <FormLabel>
+                Image
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  placeholder="Upload your image"
+                  onChange={(e) => handleImage(e, field.onChange)}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
         <FormField 
           control={form.control}
           name="caption"
@@ -60,6 +102,24 @@ const PostFeed = ({userId} : {userId: string}) => {
                   rows={10}
                   className="resize-none"
                   {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField 
+          control={form.control}
+          name="tag"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Tag
+              </FormLabel>
+              <FormControl>
+                <Input 
+                  type="text"
+                  {...field}
+                  className=""
                 />
               </FormControl>
             </FormItem>

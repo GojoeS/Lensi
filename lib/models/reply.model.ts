@@ -12,3 +12,7 @@ const replySchema = new mongoose.Schema({
     required: true
   }
 })
+
+const Reply = mongoose.models.Reply || mongoose.model("Reply", replySchema)
+
+export default Reply
