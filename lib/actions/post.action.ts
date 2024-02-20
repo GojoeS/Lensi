@@ -1,3 +1,5 @@
+"use server"
+
 import { connectToDB } from "../mongoose";
 import Post from "../models/post.model"
 import User from "../models/user.model";
@@ -14,16 +16,39 @@ interface Props{
 export async function createPost({image, caption, tag, author, path}: Props){
   connectToDB();
 
-  const createdPost = await Post.create({
-    image,
-    caption,
-    tag,
-    author,
-  });
+  try{
+    const createdPost = await Post.create({
+      image,
+      caption,
+      tag,
+      author,
+    });
+  
+    await User.findByIdAndUpdate(author,{
+      $push: { posts: createdPost._id}
+    })
+  
+    revalidatePath(path);
+  } catch(error:any){
+    throw new Error(`Failed to Post: ${error.message}`)
+  }
 
-  await User.findByIdAndUpdate(author,{
-    $push: { posts: createdPost._id}
-  })
+  
+}
 
-  revalidatePath(path);
+export async function fetchPosts(){
+  try{
+    connectToDB();
+
+    const postsQuery = Post.find({})
+      .sort({ createdAt: 'desc'})
+      .populate({path: 'author', model: User})
+
+    const posts = await postsQuery.exec();
+
+    return { posts }
+  }
+  catch(error){
+
+  }
 }

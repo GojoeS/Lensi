@@ -63,7 +63,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
         values.profile_photo = imgRes[0].url;
       }
     }
-
+    console.log("ini values.profile: "+values.profile_photo )
     await updateUser({
       userId: user.id,
       username: values.username,
@@ -97,6 +97,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
         const imageDataUrl = e.target?.result?.toString() || '';
 
         fieldChange(imageDataUrl);
+
       }
 
       fileReader.readAsDataURL(file);
@@ -206,7 +207,9 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
             
           )}
         />
-        <Button type="submit" className='bg-dark-1 hover:bg-gray-500 text-light-1'>Submit</Button>
+        <Button type="submit" className='bg-dark-1 hover:bg-gray-500 text-light-1'>
+          Submit
+        </Button>
       </form>
     </Form>
   )

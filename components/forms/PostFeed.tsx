@@ -1,18 +1,27 @@
 "use client"
 
-import { useUploadThing } from "@/lib/uploadthing"
-import { ChangeEvent, useState } from "react"
-import { usePathname, useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { PostValidation } from "@/lib/validations/post"
-import { isBase64Image } from "@/lib/utils"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Textarea } from "@/components/ui/textarea"
-import * as z from 'zod'
+import { useForm } from 'react-hook-form'
 import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { createPost } from "@/lib/actions/post.action"
+import { Textarea } from '@/components/ui/textarea'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { PostValidation } from '@/lib/validations/post'
+import * as z from 'zod'
+import Image from 'next/image'
+import { ChangeEvent, useState } from 'react'
+import { isBase64Image } from '@/lib/utils'
+import { useUploadThing } from '@/lib/uploadthing'
+import { updateUser } from '@/lib/actions/user.actions'
+import { usePathname, useRouter } from 'next/navigation'
+import { createPost } from '@/lib/actions/post.action'
 
 
 const PostFeed = ({userId} : {userId: string}) => {
@@ -54,78 +63,111 @@ const PostFeed = ({userId} : {userId: string}) => {
     }
   }
 
-  const onSubmit = async(values: z.infer<typeof PostValidation>) => {
+  const onSubmit = async (values: z.infer<typeof PostValidation>) => {
+    // const blob = values.image;
+
+    // const hasImageChanged = isBase64Image(blob);
+    // if(hasImageChanged){
+    //   const imgRes = await startUpload(files)
+
+    //   if(imgRes && imgRes[0].url){
+    //     values.image = imgRes[0].url;
+    //   }
+    // }
+
+    
     await createPost({ 
       image: values.image, 
       caption: values.caption, 
-      tag:"",
+      tag: values.tag,
       author: userId, 
       path: pathname,
     })
+    
+    console.log("test oii")
+    router.push("/");
   }
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="mt-10"
-      >
-        <FormField 
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col justify-start gap-10">
+        <FormField
           control={form.control}
           name="image"
-          render={({field}) => (
-            <FormItem>
-              <FormLabel>
-                Image
+          render={({ field }) => (
+            <FormItem className='items-center justify-center gap-4'>
+              <FormLabel className=''>
+                {field.value ? 
+                  (<Image 
+                    src={field.value}
+                    alt='profile photo'
+                    width={96}
+                    height={96}
+                    priority
+                    className='object-contain'
+                  />  
+                  ) : (
+                  ""
+                  ) 
+                }
               </FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  placeholder="Upload your image"
+              <FormControl className='flex-1 text-base-semibold text-gray-200'>
+                <Input 
+                  type='file'
+                  accept='image/*' 
+                  placeholder='Upload a photo'
+                  className='shadow-md'
                   onChange={(e) => handleImage(e, field.onChange)}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
+            
           )}
         />
-        <FormField 
+        <FormField
           control={form.control}
           name="caption"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>
+            <FormItem className='flex flex-col justify-center gap-3'>
+              <FormLabel className='text-base-semibold text-dark-2'>
                 Caption
               </FormLabel>
-              <FormControl>
+              <FormControl className='flex-1 text-base-semibold text-gray-200'>
                 <Textarea 
-                  rows={10}
-                  className="resize-none"
+                  rows={10}                
+                  className='account-form_input no focus'
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
+            
           )}
         />
-        <FormField 
+        <FormField
           control={form.control}
           name="tag"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>
+            <FormItem className='flex flex-col justify-center gap-3'>
+              <FormLabel className='text-base-semibold text-dark-2'>
                 Tag
               </FormLabel>
-              <FormControl>
+              <FormControl className='flex-1 text-base-semibold text-gray-200'>
                 <Input 
-                  type="text"
+                  type='text'                  
+                  className='account-form_input no focus'
                   {...field}
-                  className=""
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
+            
           )}
         />
-        <Button type="submit" className='bg-dark-1 hover:bg-gray-500 text-light-1'>Post</Button>
+        <Button type="submit"className='bg-dark-1 hover:bg-gray-500 text-light-1'>
+          Post
+        </Button>
       </form>
     </Form>
   )

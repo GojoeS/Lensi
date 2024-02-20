@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema({
-  image: {type: String, required: true},
+  image: {
+    type: String, 
+    // required: true
+  },
   caption: { type: String, required: true},
   tag:{type: String},
   author: {
