@@ -2,13 +2,13 @@ import { UserButton } from "@clerk/nextjs";
 import { fetchPosts} from '@/lib/actions/post.action'
 import { currentUser } from "@clerk/nextjs";
 import PostCard from "@/components/cards/PostCard";
+import { fetchUser } from "@/lib/actions/user.actions";
 
 export default async function Home() {
 
   const result = await fetchPosts()
 
   const user = await currentUser();
-
 
   return (
     <div className="h-screen">

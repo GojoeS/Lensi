@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const postSchema = new mongoose.Schema({
   image: {
     type: String, 
-    // required: true
+    required: true
   },
   caption: { type: String, required: true},
   tag:{type: String},
@@ -20,6 +20,12 @@ const postSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Comment"
+    }
+  ],
+  like:[
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
     }
   ]
 })

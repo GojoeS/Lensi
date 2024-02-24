@@ -4,6 +4,7 @@ import { connectToDB } from "../mongoose";
 import Post from "../models/post.model"
 import User from "../models/user.model";
 import { revalidatePath } from "next/cache";
+import Reply from "../models/reply.model";
 
 interface Props{
   image: string,
@@ -32,8 +33,6 @@ export async function createPost({image, caption, tag, author, path}: Props){
   } catch(error:any){
     throw new Error(`Failed to Post: ${error.message}`)
   }
-
-  
 }
 
 export async function fetchPosts(){
@@ -48,7 +47,23 @@ export async function fetchPosts(){
 
     return { posts }
   }
-  catch(error){
+  catch(error:any){
+    throw new Error(`Failed to fetch posts: ${error.message}`)
+  }
+}
 
+export async function fetchPostById(id: string){
+  connectToDB();
+
+  try{
+
+    const post = await Post.findById(id)
+    .populate({ path: "author", model: User, select: "_id id name image" })
+    .exec()
+    
+    return post;
+  }
+  catch(error:any){
+    throw new Error(`Failed to fetch post by id: ${error.message}`)
   }
 }

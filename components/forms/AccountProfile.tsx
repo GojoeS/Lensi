@@ -63,7 +63,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
         values.profile_photo = imgRes[0].url;
       }
     }
-    console.log("ini values.profile: "+values.profile_photo )
+    
     await updateUser({
       userId: user.id,
       username: values.username,

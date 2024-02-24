@@ -64,17 +64,16 @@ const PostFeed = ({userId} : {userId: string}) => {
   }
 
   const onSubmit = async (values: z.infer<typeof PostValidation>) => {
-    // const blob = values.image;
+    const blob = values.image;
 
-    // const hasImageChanged = isBase64Image(blob);
-    // if(hasImageChanged){
-    //   const imgRes = await startUpload(files)
+    const hasImageChanged = isBase64Image(blob);
+    if(hasImageChanged){
+      const imgRes = await startUpload(files)
 
-    //   if(imgRes && imgRes[0].url){
-    //     values.image = imgRes[0].url;
-    //   }
-    // }
-
+      if(imgRes && imgRes[0].url){
+        values.image = imgRes[0].url;
+      }
+    }
     
     await createPost({ 
       image: values.image, 
@@ -122,7 +121,6 @@ const PostFeed = ({userId} : {userId: string}) => {
               </FormControl>
               <FormMessage />
             </FormItem>
-            
           )}
         />
         <FormField
@@ -142,7 +140,6 @@ const PostFeed = ({userId} : {userId: string}) => {
               </FormControl>
               <FormMessage />
             </FormItem>
-            
           )}
         />
         <FormField

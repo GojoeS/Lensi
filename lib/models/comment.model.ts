@@ -11,10 +11,16 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  reply: {
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  reply: [
+    {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Reply"
-  }
+    }
+  ]
 })
 
 const Comment = mongoose.models.Comment || mongoose.model("Comment", commentSchema)

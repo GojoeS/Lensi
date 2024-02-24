@@ -16,6 +16,12 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post"
+    }
+  ]
 })
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);

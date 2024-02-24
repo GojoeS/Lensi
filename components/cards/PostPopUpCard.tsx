@@ -1,13 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
-import PostPopUpCard from './PostPopUpCard'
 import { likePost } from '@/lib/actions/like.action'
+import Comment from '../forms/Comment'
+import { fetchComment } from '@/lib/actions/comment.action'
+import { Button } from '@/components/ui/button'
+import { useState } from 'react'
+import ReplyCard from './ReplyCard'
+import { fetchReplyById } from '@/lib/actions/reply.action'
 
 interface Props{
   id: string,
-  currentUserId: string | null,
-  comment: {
+  currentUserId: string,
+  comments: {
     author: {
       image:string,
       name:string,
@@ -23,17 +27,19 @@ interface Props{
     id: string,
   },
   createdAt: string,
+  currentUserImg: string
 }
 
-const PostCard = ({ 
+const PostPopUpCard = async({ 
   id,
   currentUserId,
-  comment,
+  comments,
   image,
   caption,
   tag,
   author,
   createdAt, 
+  currentUserImg
 }: Props) => {
 
   const date = new Date(createdAt);
@@ -43,6 +49,7 @@ const PostCard = ({
   ]
 
   //BUAT FORMAT TANGGAL:
+
   const year = date.getFullYear();
   const month = date.getMonth();
   const day = String(date.getDate()).padStart(2, '0');
@@ -51,14 +58,16 @@ const PostCard = ({
 
   const formattedDateTime = `${year} ${monthNames[month]} ${day} - ${hours}:${minutes}`;
 
-  const isPopUp = false;
-
   const handleLike = async() =>{
     await likePost({
       author: currentUserId,
 
     })
   }
+
+  const comment = await fetchComment(id)
+
+
   return (
     <article>
       <div className='flex bg-white rounded-lg shadow-lg py-4 px-2 min-w-[400px] 
@@ -84,21 +93,47 @@ const PostCard = ({
             </Link>
           </div>
           <h3>{caption}</h3>
-          <p className='text-blue'>{tag && tag}</p>
-          {
-            comment.length > 0 && (
-              <Link href={`/post/${id}`}>
-                <p>{`View all ${comment.length} comments `}</p>
-              </Link>
-            )
-          }
+          <p className='text-blue'>{tag && tag}</p>  
+          <div>
+            
+          </div>       
           <p className='text-gray-500 font-[500]'>{formattedDateTime}</p>
+          <Comment 
+            postId={id}
+            currentUserImg={currentUserImg}
+            currentUserId={currentUserId}
+          />
+          {
+            comment.map(async (value) => {
+              
+              const replies = await fetchReplyById(value.reply)
+              const plainReplies = JSON.parse(JSON.stringify(replies));
+              
+              return(
+              <div className='flex gap-2' key={value.id}>
+                <div>
+                  <Image src={value.author.image} alt="photo profile" width={50} height={50} className='rounded-full'/>
+                </div>
+                <div className='flex flex-col '>
+                  <p className='font-semibold'>{value.author.username}</p>
+                  <p>{value.text}</p>
+                  <Link href={`/post/${id}/${value._id}}`}>
+                    <p className='font-semibold text-gray-700 text-[14px]'>Reply</p>                 
+                  </Link>
+                  <div>
+                    { value.reply !== null && (                       
+                      <ReplyCard 
+                        replies={plainReplies} />
+                    )}
+                  </div>
+                </div>
+              </div>
+            )})
+          }
         </div>
       </div>
-      
-      
     </article>
   )
 }
 
-export default PostCard
+export default PostPopUpCard
