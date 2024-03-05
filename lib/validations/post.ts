@@ -17,5 +17,5 @@ export const ReplyValidation = z.object({
 })
 
 export const LikeValidation = z.object({
-  accountId: z.string()
+  // accountId: z.string()
 })

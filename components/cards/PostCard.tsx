@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import PostPopUpCard from './PostPopUpCard'
 import { likePost } from '@/lib/actions/like.action'
+import { addCreatedDate } from '@/lib/utils'
+import Like from '../forms/Like'
 
 interface Props{
   id: string,
-  currentUserId: string | null,
+  currentUserId: string,
   comment: {
     author: {
       image:string,
@@ -23,6 +24,8 @@ interface Props{
     id: string,
   },
   createdAt: string,
+  like:any,
+  currUserLike: string[],
 }
 
 const PostCard = ({ 
@@ -34,6 +37,8 @@ const PostCard = ({
   tag,
   author,
   createdAt, 
+  like,
+  currUserLike
 }: Props) => {
 
   const date = new Date(createdAt);
@@ -42,23 +47,9 @@ const PostCard = ({
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ]
 
-  //BUAT FORMAT TANGGAL:
-  const year = date.getFullYear();
-  const month = date.getMonth();
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const plainPost = JSON.parse(JSON.stringify(id));
+  const plainUser = JSON.parse(JSON.stringify(currentUserId));
 
-  const formattedDateTime = `${year} ${monthNames[month]} ${day} - ${hours}:${minutes}`;
-
-  const isPopUp = false;
-
-  const handleLike = async() =>{
-    await likePost({
-      author: currentUserId,
-
-    })
-  }
   return (
     <article>
       <div className='flex bg-white rounded-lg shadow-lg py-4 px-2 min-w-[400px] 
@@ -78,11 +69,21 @@ const PostCard = ({
           </Link>
           <Image src={image} alt="post's image" width={500} height={500}/>
           <div className='flex gap-3'>
-            <Image src='/icons/heart.svg' alt="like button" width={24} height={24} />
+            <Like 
+              postId={plainPost}
+              authorId={plainUser}
+              like={JSON.parse(JSON.stringify(like))}
+              currUserLike={currUserLike}
+            />
             <Link href={`/post/${id}`}>
               <Image src='/icons/comment.svg' alt="like button" width={24} height={24} />   
             </Link>
           </div>
+          {
+            like.length > 0 && (
+            <p className='font-semibold'>{like.length} like{like.length > 1 && "s"}</p>
+            )
+          }
           <h3>{caption}</h3>
           <p className='text-blue'>{tag && tag}</p>
           {
@@ -92,11 +93,9 @@ const PostCard = ({
               </Link>
             )
           }
-          <p className='text-gray-500 font-[500]'>{formattedDateTime}</p>
+          <p className='text-gray-500 font-[500]'>{addCreatedDate(createdAt)}</p>
         </div>
       </div>
-      
-      
     </article>
   )
 }

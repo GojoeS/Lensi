@@ -1,6 +1,6 @@
 'use client'
 
-import { sidebarLinks } from "@/constants"
+import { sidebarLinks } from "@/components/ui/constants"
 import Link from "next/link";
 import Image from "next/image";
 

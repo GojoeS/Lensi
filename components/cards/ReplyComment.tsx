@@ -58,12 +58,12 @@ const replyComment = async({
 
   const formattedDateTime = `${year} ${monthNames[month]} ${day} - ${hours}:${minutes}`;
 
-  const handleLike = async() =>{
-    await likePost({
-      author: currentUserId,
+  // const handleLike = async() =>{
+  //   await likePost({
+  //     author: currentUserId,
 
-    })
-  }
+  //   })
+  // }
 
   const comment = await fetchComment(id)
   const reply = await fetchReply(commentToReply)

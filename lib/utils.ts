@@ -37,3 +37,39 @@ export function formatThreadCount(count: number): string {
     return `${threadCount} ${threadWord}`;
   }
 }
+
+export function addCreatedDate(dateEndPoint:Date | string){
+  const date = new Date(dateEndPoint);
+  const monthNames = [
+    "Jan", "Feb", "Mar", "Apr" , "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ]
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${year} ${monthNames[month]} ${day} - ${hours}:${minutes}`;
+}
+
+export function getTimePassedString(timestamp:Date | string) {
+  const currentTime: Date = new Date();
+  const targetTime: Date = new Date(timestamp);
+  
+  const elapsedMilliseconds: number = currentTime.getTime() - targetTime.getTime();
+  const elapsedSeconds: number = Math.floor(elapsedMilliseconds / 1000);
+  const elapsedMinutes: number = Math.floor(elapsedSeconds / 60);
+  const elapsedHours: number = Math.floor(elapsedMinutes / 60);
+  const elapsedDays: number = Math.floor(elapsedHours / 24);
+
+  if (elapsedDays > 0) {
+      return `${elapsedDays}d ago`;
+  } else if (elapsedHours > 0) {
+      return `${elapsedHours}h ago`;
+  } else if (elapsedMinutes > 0) {
+      return `${elapsedMinutes}m ago`;
+  } else {
+      return `${elapsedSeconds}s ago`;
+  }
+}
