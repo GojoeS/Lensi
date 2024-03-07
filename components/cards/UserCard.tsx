@@ -32,11 +32,10 @@ const UserCard = ({
           height={48}
           className="rounded-full"
         />
-      </div>
-
-      <div className="flex-1 text-ellipsis">
-        <h4 className="text-base-semibold text-dark-1">{name}</h4>
-        <p className="text-small-medium text-gray-1">@{username}</p>
+        <div className="flex-1 text-ellipsis">
+          <h4 className="text-base-semibold text-dark-1">{name}</h4>
+          <p className="text-small-medium text-gray-1">@{username}</p>
+        </div>
       </div>
 
       <Button className="user-card_btn" onClick={() => router.push(`/profile/${id}`)}>

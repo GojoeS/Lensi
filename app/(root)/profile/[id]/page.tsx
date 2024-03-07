@@ -21,13 +21,16 @@ async function Page({ params }: {params: {id: string}}) {
   return (
     <section>
       <ProfileHeader 
-        accountId={plainUserInfo.id}
+        accountId={plainUserInfo._id}
+        visitedId={params.id}
         authUserId={user.id}
         name={plainUserInfo.name}
         username={plainUserInfo.username}
         imgUrl={plainUserInfo.image}
         bio={plainUserInfo.bio}
         postLength={plainUserInfo.posts.length}
+        follower={plainUserInfo.follower}
+        following={plainUserInfo.following}
       />
 
       <div className="mt-9">

@@ -11,6 +11,8 @@ const LeftSidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { userId } = useAuth();
+
+ 
   
   return (
     <section className="custom-scrollbar leftsidebar">
@@ -31,6 +33,7 @@ const LeftSidebar = () => {
               href={link.route}
               key={link.label}
               className={`leftsidebar_link ${isActive && 'left-active'}`}
+              onClick={() => router.refresh()}
             >
               <Image src={link.imgURL} alt={link.label} width={24} height={24} />
               <p className='text-dark-1 max-lg:hidden'>{link.label}</p>

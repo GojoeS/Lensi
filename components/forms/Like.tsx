@@ -11,8 +11,6 @@ import { Button } from "@/components/ui/button"
 import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { likePost } from '@/lib/actions/like.action'
-import User from '@/lib/models/user.model'
-import { fetchUser } from '@/lib/actions/user.actions'
 
 interface Props{
   postId: string,
@@ -41,10 +39,10 @@ const Like = ({ postId, authorId, like, currUserLike}:Props) => {
       <form onSubmit={form.handleSubmit(onSubmit)} >
         <Button type="submit" size="none">
           {
-            currUserLike.includes(postId) ?
-            <Image src='/icons/heart-fill.svg' alt="like button" width={24} height={24} />           
+            like.includes(authorId) ?
+            <Image src='/icons/heart-fill-red.png' alt="like button" width={24} height={24} className='fill-current text-red-400' />           
             :
-            <Image src='/icons/heart.svg' alt="like button" width={24} height={24} />           
+            <Image src='/icons/heart.svg' alt="like button" width={24} height={24}  />           
           }         
         </Button>
       </form>

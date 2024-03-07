@@ -94,11 +94,18 @@ export async function fetchUsers({
 
     const query: FilterQuery<typeof User> = {
       id: {$ne: userId}
+    };
+
+    if (searchString.trim() !== "") {
+      query.$or = [
+        { username: { $regex: regex } },
+        { name: { $regex: regex } },
+      ];
     }
 
     if(searchString.trim() !== ""){
       query.$or =[
-        {username: { $regex: regex }},
+        { username: { $regex: regex }},
         { name: { $regex: regex }}
       ]
     }
@@ -115,7 +122,7 @@ export async function fetchUsers({
   }
 }
 
-export async function getCommentActivity(userId: string){
+export async function getAllActivity(userId: string){
 
   try {
     connectToDB()
@@ -170,9 +177,59 @@ export async function getCommentActivity(userId: string){
       }
     ])
 
-    return {comments, likes}
+    const userFollower = await User.findOne({ _id: userId })
+    .populate({
+      path: "follower._id",
+      model: User,
+      select: "_id name username image"
+    })
+
+    const follower = userFollower.follower
+
+    return {comments, likes, follower}
 
   } catch (error:any) {
     throw new Error(`Failed to fetch activity: ${error.message}`)
+  }
+}
+
+export async function updateFollow({ authUser, accountId, path}: {authUser:string, accountId:string, path: string} ){
+  try {
+    connectToDB()
+
+    const currentUser = await User.findOne({id: authUser})
+    const visitedAccount = await User.findById(accountId)
+    
+    
+    //BENERIN LOGIC DISINI
+    const isFollowing = currentUser.following.some((following:any) => following.equals(visitedAccount._id));
+    
+    if(isFollowing){
+      currentUser.following.pull(visitedAccount._id)
+      visitedAccount.follower.pull(currentUser._id)
+    }
+    else{
+      currentUser.following.push(visitedAccount._id)
+      visitedAccount.follower.push(currentUser._id)
+    }
+
+    await currentUser.save()
+    await visitedAccount.save()
+
+    revalidatePath(path)
+  } catch (error:any) {
+    throw new Error(`Failed to update follow: ${error.message}`)
+  }
+}
+
+export async function followCheck({ authUser, accountId }: { authUser:string, accountId:string } ){
+  try {
+    connectToDB()
+    const currentUser = await User.findOne({id: authUser})
+    const visitedAccount = await User.findById(accountId)
+    
+    return currentUser.following.includes(visitedAccount._id);
+  } catch (error:any) {
+    throw new Error(`Error adding checking like: ${error.message}`)
   }
 }

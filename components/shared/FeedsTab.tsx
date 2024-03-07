@@ -20,11 +20,13 @@ const FeedsTab = async({currentUserId, accountId, accountType, postId}: Props) =
   if(!result) redirect("/")
 
   return (
-    <section className='mt-9 grid grid-cols-3 max-sm:gap-1 gap-4 w-full border justify-between object-cover'>
+    <section className='mt-9 grid grid-cols-3 max-sm:gap-1 gap-4 w-full'>
       {result.posts.map((post:any) => (
         <Link href={`/post/${post._id}`} key={post._id}>
-          <div>            
-            <Image src={post.image} alt="post" width={300} height={300}/>
+          <div className='relative aspect-square h-auto w-auto'>            
+            <Image src={post.image} alt="post" fill
+              className=" object-cover"
+            />
           </div>
         </Link>
       ))}      

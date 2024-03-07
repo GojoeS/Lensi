@@ -1,4 +1,5 @@
 import Image from "next/image"
+import FollowButton from "../forms/FollowButton"
 
 interface Props{
   accountId:string,
@@ -7,7 +8,10 @@ interface Props{
   username:string,
   imgUrl:string,
   bio:string,
-  postLength: number
+  postLength: number,
+  follower:string[],
+  following:string[],
+  visitedId:string
 }
 
 const ProfileHeader = ({
@@ -17,7 +21,10 @@ const ProfileHeader = ({
   username,
   imgUrl,
   bio,
-  postLength
+  postLength,
+  follower,
+  following,
+  visitedId
 } :Props) => {
 
   return (
@@ -43,18 +50,22 @@ const ProfileHeader = ({
               <p>Post{postLength > 1 && "s"}</p>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <p>{postLength}</p>
+              <p>{follower.length}</p>
               <p>Follower</p>
             </div>
             <div className="flex flex-col items-center justify-center">
-              <p>{postLength}</p>
+              <p>{following.length}</p>
               <p>Following</p>
             </div>
           </div>
         </div>
       </div>
-        <p className="mt-6 max-w-lg text-base-regular">{bio}</p>
-        <div className="mt-12 h-0.5 w-full bg-light-2" />
+      <p className="mt-6 max-w-lg text-base-regular">{bio}</p>
+      { authUserId !== visitedId ?
+        <FollowButton authUser={authUserId} accountId={accountId}  />
+        : <></>
+      }
+      <div className="mt-12 h-0.5 w-full bg-light-2" />
     </div>
   )
 }
