@@ -1,10 +1,11 @@
 
 
-import { fetchUserPosts } from '@/lib/actions/user.actions'
+import { fetchUserLikes, fetchUserPosts } from '@/lib/actions/user.actions'
 import { redirect } from 'next/navigation';
 import React from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
+import { fetchPostById } from '@/lib/actions/post.action';
 
 interface Props{
   accountId:string, 
@@ -12,16 +13,16 @@ interface Props{
 
 const FeedsTab = async({accountId}: Props) => {
 
-  let result = await fetchUserPosts(accountId);  
-  if(!result) redirect("/")
+  let result = await fetchUserLikes(accountId);
+
   result.sort((a:any, b:any) => b.createdAt - a.createdAt)
 
   return (
     <section className='mt-9 grid grid-cols-3 max-sm:gap-1 gap-4 w-full'>
       {result.map((post:any) => (
-        <Link href={`/post/${post._id}`} key={post._id}>
+        <Link href={`/post/${post.parentId._id}`} key={post.parentId._id}>
           <div className='relative aspect-square h-auto w-auto'>            
-            <Image src={post.image} alt="post" fill
+            <Image src={post.parentId.image} alt="post" fill
               className=" object-cover"
             />
           </div>

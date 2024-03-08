@@ -7,6 +7,7 @@ import UserCard from "@/components/cards/UserCard";
 import Searchbar from "@/components/shared/Searchbar";
 import { fetchPosts } from "@/lib/actions/post.action";
 import PostCard from "@/components/cards/PostCard";
+import Image from "next/image";
 
 const RightSidebar = async() => {
 
@@ -32,11 +33,18 @@ const RightSidebar = async() => {
       <div className="flex flex-1 flex-col justify-start rounded-2xl bg-light-1.5 ">
         <h3 className="text-heading4-medium">Switch Account</h3>
         <div className="flex justify-start">
-          <div className="flex flex-1 gap-3">
-            <UserButton afterSignOutUrl="/"/>
+          <div className="flex flex-1 gap-3 items-center">
+            <div className="relative h-10 w-10 object-cover">
+              <Image 
+                src={plainUserInfo.image}
+                alt="Profile Image"
+                fill
+                className="rounded-full object-cover shadow-2xl"
+              />
+            </div>
             <div>
-              <p>Thomas Farel</p>
-              <p>@username</p>
+              <p className="font-semibold text-[18px]">@{plainUserInfo.username}</p>
+              <p>{plainUserInfo.name}</p>
             </div>
           </div>
         </div>
@@ -54,7 +62,6 @@ const RightSidebar = async() => {
                 name={user.name}
                 username={user.username}
                 imgUrl={user.image}
-                personType="User"
               />
             ))}
           </>

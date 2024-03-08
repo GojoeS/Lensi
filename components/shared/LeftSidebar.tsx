@@ -12,8 +12,6 @@ const LeftSidebar = () => {
   const pathname = usePathname();
   const { userId } = useAuth();
 
- 
-  
   return (
     <section className="custom-scrollbar leftsidebar">
       

@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { profileTabs } from "@/components/ui/constants";
 import Image from "next/image";
 import FeedsTab from "@/components/shared/FeedsTab";
+import LikedTab from "@/components/shared/LikedTab";
 
 
 async function Page({ params }: {params: {id: string}}) {
@@ -48,18 +49,17 @@ async function Page({ params }: {params: {id: string}}) {
                 <p className="max-sm:hidden">{tab.label}</p>
               </TabsTrigger>
             ))}
-          </TabsList>
-          {profileTabs.map((tab) => (
-            <TabsContent key={`content-${tab.label}`} value={tab.value}
-            className="w-full">
-              <FeedsTab 
-                currentUserId={user.id}
-                accountId={plainUserInfo.id}
-                accountType="User"
-                postId={plainUserInfo.posts._id}
-              />
-            </TabsContent>
-          ))}
+          </TabsList>         
+          <TabsContent value="feeds" className="w-full">
+            <FeedsTab 
+              accountId={plainUserInfo.id}
+            />
+          </TabsContent>
+          <TabsContent value="liked" className="w-full">
+            <LikedTab 
+              accountId={plainUserInfo.id}
+            />
+          </TabsContent>
           <TabsContent value="feed">HAHA</TabsContent>
         </Tabs>
       </div>

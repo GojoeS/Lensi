@@ -9,7 +9,6 @@ interface Props{
   name: string;
   username: string;
   imgUrl: string,
-  personType:string
 }
 
 const UserCard = ({
@@ -17,7 +16,6 @@ const UserCard = ({
   name,
   username,
   imgUrl, 
-  personType
 }: Props) => {
 
   const router = useRouter()
@@ -33,8 +31,8 @@ const UserCard = ({
           className="rounded-full"
         />
         <div className="flex-1 text-ellipsis">
-          <h4 className="text-base-semibold text-dark-1">{name}</h4>
-          <p className="text-small-medium text-gray-1">@{username}</p>
+          <p className="font-semibold">@{username}</p>
+          <p className="text-small-medium text-gray-1">{name}</p>
         </div>
       </div>
 

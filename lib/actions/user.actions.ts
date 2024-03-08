@@ -65,14 +65,36 @@ export async function fetchUser(userId: string){
 export async function fetchUserPosts(userId: string){
   connectToDB;
   try {
-    const post = await User.findOne({ id: userId })
+    const user = await User.findOne({ id: userId })
     .populate({
       path: "posts",
       model: Post,
-      select: 'image _id'
+      select: 'image _id createdAt'
     })
 
-    return post
+    return user.posts
+  } catch (error: any) {
+    throw new Error(`Failed to fetch user posts: ${error.message}`)
+  }
+}
+
+export async function fetchUserLikes(userId: string){
+  connectToDB;
+
+  try {
+    const user = await User.findOne({ id: userId })
+    .populate({
+      path: "likes",
+      model: Like,
+      select: 'parentId createdAt',
+      populate:{
+        path: "parentId",
+        model: Post,
+        select: "image _id"
+      }
+    })
+
+    return user.likes
   } catch (error: any) {
     throw new Error(`Failed to fetch user posts: ${error.message}`)
   }
@@ -95,13 +117,6 @@ export async function fetchUsers({
     const query: FilterQuery<typeof User> = {
       id: {$ne: userId}
     };
-
-    if (searchString.trim() !== "") {
-      query.$or = [
-        { username: { $regex: regex } },
-        { name: { $regex: regex } },
-      ];
-    }
 
     if(searchString.trim() !== ""){
       query.$or =[
@@ -193,15 +208,13 @@ export async function getAllActivity(userId: string){
   }
 }
 
-export async function updateFollow({ authUser, accountId, path}: {authUser:string, accountId:string, path: string} ){
+export async function updateFollow({ authUser, accountId, path}: {authUser:string, accountId:string, path: string}){
   try {
     connectToDB()
 
     const currentUser = await User.findOne({id: authUser})
     const visitedAccount = await User.findById(accountId)
     
-    
-    //BENERIN LOGIC DISINI
     const isFollowing = currentUser.following.some((following:any) => following.equals(visitedAccount._id));
     
     if(isFollowing){

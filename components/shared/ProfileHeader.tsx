@@ -1,5 +1,7 @@
 import Image from "next/image"
 import FollowButton from "../forms/FollowButton"
+import { Button } from "../ui/button"
+import Link from "next/link"
 
 interface Props{
   accountId:string,
@@ -63,7 +65,10 @@ const ProfileHeader = ({
       <p className="mt-6 max-w-lg text-base-regular">{bio}</p>
       { authUserId !== visitedId ?
         <FollowButton authUser={authUserId} accountId={accountId}  />
-        : <></>
+        : 
+        <Link href="/edit-profile" className="w-full flex justify-center border border-light-2 items-center p-2 bg-light-2 hover:border hover:bg-light-1 rounded-lg">
+          Edit Profile
+        </Link>
       }
       <div className="mt-12 h-0.5 w-full bg-light-2" />
     </div>
