@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { likePost } from '@/lib/actions/like.action'
 import { addCreatedDate } from '@/lib/utils'
 import Like from '../forms/Like'
+import DeleteButtonPost from '../shared/DeleteButtonPost'
 
 interface Props{
   id: string,
@@ -19,6 +20,7 @@ interface Props{
   caption: string,
   tag: string,
   author: {
+    _id: string
     name: string,
     image: string,
     id: string,
@@ -47,30 +49,32 @@ const PostCard = ({
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ]
 
-  const plainPost = JSON.parse(JSON.stringify(id));
+  const plainPostId = JSON.parse(JSON.stringify(id));
   const plainUser = JSON.parse(JSON.stringify(currentUserId));
 
   return (
     <article>
-      <div className='flex bg-white rounded-lg shadow-lg py-4 px-2 min-w-[400px] 
-      max-w-[540px] justify-center items-center'>
+      <div className='post-card'>
         <div className='flex flex-col gap-2'>
-          <Link href={`/profile/${author.id}`}>
-            <div className='flex items-center my-2 gap-2'>
-              <Image 
-                src={author.image}
-                alt="profile image"
-                width={45}
-                height={45}
-                className='rounded-full'
-              />
-              <p className='font-bold'>{author.name}</p>
-            </div>
-          </Link>
+          <div className='flex justify-between'>
+            <Link href={`/profile/${author.id}`}>
+              <div className='flex items-center my-2 gap-2'>
+                <Image 
+                  src={author.image}
+                  alt="profile image"
+                  width={40}
+                  height={40}
+                  className='rounded-full'
+                />
+                <p className='font-bold'>{author.name}</p>
+              </div>
+            </Link>
+            { author._id == currentUserId && <DeleteButtonPost postId={plainPostId} /> }
+          </div>
           <Image src={image} alt="post's image" width={500} height={500}/>
           <div className='flex gap-3'>
             <Like 
-              postId={plainPost}
+              postId={plainPostId}
               authorId={plainUser}
               like={JSON.parse(JSON.stringify(like))}
               currUserLike={currUserLike}
@@ -84,8 +88,8 @@ const PostCard = ({
             <p className='font-semibold'>{like.length} like{like.length > 1 && "s"}</p>
             )
           }
-          <h3>{caption}</h3>
-          <p className='text-blue'>{tag && tag}</p>
+          <p className='text-normal'>{caption}</p>
+          <p className='text-blue text-normal'>{tag && tag}</p>
           {
             comment.length > 0 && (
               <Link href={`/post/${id}`}>

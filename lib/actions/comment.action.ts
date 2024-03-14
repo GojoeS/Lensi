@@ -5,6 +5,7 @@ import Comment from "../models/comment.model";
 import Post from "../models/post.model"
 import { connectToDB } from "../mongoose"
 import User from "../models/user.model";
+import Reply from "../models/reply.model";
 
 interface Props{
   parentId:string,
@@ -68,5 +69,33 @@ export async function fetchCommentById(commentId: string){
   }
   catch(error:any){
     throw new Error(`Failed to fetch post by id: ${error.message}`)
+  }
+}
+
+export async function deleteComment({commentId, parentId, path}: {commentId: string, parentId: string, path: string}){
+  try {
+    connectToDB();
+
+    const post = await Post.findById( parentId )
+    const allReplies = await Comment.findById(commentId).select("reply")
+    const replyToDelete = allReplies.reply
+
+    //delete all repliess
+
+    replyToDelete.forEach(async(element:any) => {
+      await Reply.findByIdAndDelete(element);
+    });
+    
+    await Post.findByIdAndUpdate(parentId, {
+      $pull: {comment: commentId},
+    });
+
+    await Comment.findByIdAndDelete(commentId);
+
+    post.save()
+
+    revalidatePath(path)
+  } catch (error: any) {
+    throw new Error(`Failed to delete comments: ${error.message}`)
   }
 }

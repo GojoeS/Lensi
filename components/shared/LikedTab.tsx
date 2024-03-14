@@ -18,10 +18,10 @@ const FeedsTab = async({accountId}: Props) => {
   result.sort((a:any, b:any) => b.createdAt - a.createdAt)
 
   return (
-    <section className='mt-9 grid grid-cols-3 max-sm:gap-1 gap-4 w-full'>
+    <section className='tab-container'>
       {result.map((post:any) => (
         <Link href={`/post/${post.parentId._id}`} key={post.parentId._id}>
-          <div className='relative aspect-square h-auto w-auto'>            
+          <div className='image-container'>            
             <Image src={post.parentId.image} alt="post" fill
               className=" object-cover"
             />

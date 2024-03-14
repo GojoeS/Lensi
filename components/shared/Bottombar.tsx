@@ -22,7 +22,7 @@ const Bottombar = () => {
               <Link 
                 href={link.route}
                 key={link.label}
-                className={`leftsidebar_link ${isActive && 'bg-white'}`}
+                className={`leftsidebar_link ${isActive && 'bottom-active'}`}
               >
                 <Image src={link.imgURL} alt={link.label} width={24} height={24} />
                 <p className='text-dark-1 max-lg:hidden'>{link.label}</p>

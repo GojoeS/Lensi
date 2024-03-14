@@ -29,11 +29,11 @@ const RightSidebar = async() => {
   const suggestedUsers = shuffledUsers.slice(0, 6);
 
   return (
-    <section className="rightsidebar border">
-      <div className="flex flex-1 flex-col justify-start rounded-2xl bg-light-1.5 ">
-        <h3 className="text-heading4-medium">Switch Account</h3>
+    <section className="rightsidebar">
+      <div className="rightsidebar-container">
+        <h3 className="text-heading4-medium">Your Account</h3>
         <div className="flex justify-start">
-          <div className="flex flex-1 gap-3 items-center">
+          <div className="flex flex-1 gap-2 items-center">
             <div className="relative h-10 w-10 object-cover">
               <Image 
                 src={plainUserInfo.image}
@@ -43,13 +43,13 @@ const RightSidebar = async() => {
               />
             </div>
             <div>
-              <p className="font-semibold text-[18px]">@{plainUserInfo.username}</p>
-              <p>{plainUserInfo.name}</p>
+              <p className="font-semibold text-[16.5px]">@{plainUserInfo.username}</p>
+              <p className="text-small-medium text-[16px] text-gray-1">{plainUserInfo.name}</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-1 flex-col justify-start ">
+      <div className="rightsidebar-container">
         <h3 className="text-heading4-medium">Suggested Account</h3>
         {result.users.length === 0 ? (
           <p className="no-result">No users</p>

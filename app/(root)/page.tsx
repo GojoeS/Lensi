@@ -10,18 +10,17 @@ export default async function Home() {
   const result = await fetchPosts()
 
   const user = await currentUser();
-  if(!user) return null
+  if(!user) return redirect("/sign-in")
 
   const userInfo = await fetchUser(user.id)
   if(!userInfo?.onboarded) redirect("/onboarding")
   const plainUserInfo = JSON.parse(JSON.stringify(userInfo));
 
-  let totalPost = 0
+  let totalPost = 0;
 
   return (
     <div>
-      <section className="mt-9 flex flex-col gap-10 items-center">
-      <h1 className="head-text text-left">Home</h1>
+      <section className="flex flex-col gap-10 items-center">
         {
           result?.posts.length === 0 ? (
             <p>No post found</p>
@@ -47,9 +46,7 @@ export default async function Home() {
                     />
                   )
                 }
-                if(totalPost > 0){
-                  return <p>No post found</p>
-                }
+                totalPost > 0 && <p>No post found</p>
               })
             }
             </>

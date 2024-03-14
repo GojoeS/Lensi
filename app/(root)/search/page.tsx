@@ -32,30 +32,32 @@ const Page = async({
 
   return (
     <section>
-
-      <Searchbar routeType='search' />
-
-      <div className="mt-14 flex flex-col gap-9">
-        {result.users.length === 0 ? (
-          <p className="no-result">No users</p>
-          ): (
-          <>
-            {result.users.map((user) => {
-              if (searchParams.q) {
-                return (
-                  <UserCard
-                    key={user.id}
-                    id={user.id}
-                    name={user.name}
-                    username={user.username}
-                    imgUrl={user.image}
-                  />
-                );
-              }
-            })}
-          </>
-        )}
-
+      <div className="flex flex-col gap-9 relative h-10">
+        <div className="sticky top-0 right-0 left-0 h-10">
+          <Searchbar routeType='search' />                 
+          {result.users.length === 0 ? (
+            <p className="no-result">No users</p>
+            ): (
+            <>
+              {result.users.map((user) => {
+                if (searchParams.q) {
+                  return (
+                    <UserCard
+                      key={user.id}
+                      id={user.id}
+                      name={user.name}
+                      username={user.username}
+                      imgUrl={user.image}
+                    />
+                  );
+                }
+              })}
+            </>
+          )}
+        </div>
+      </div>
+      
+      <div className="mt-14 flex flex-col gap-9 ">
         <h1 className="head-text mt-5">Explore</h1>
         <section className='grid grid-cols-3 max-sm:gap-1 gap-4 w-full'>
           {

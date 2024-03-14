@@ -37,6 +37,8 @@ interface Props{
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [ files, setFiles ] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
   const pathname = usePathname();
@@ -53,33 +55,40 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   })
 
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
-    const blob = values.profile_photo;
-
-    const hasImageChanged = isBase64Image(blob);
-    if(hasImageChanged){
-      const imgRes = await startUpload(files)
-
-      if(imgRes && imgRes[0].url){
-        values.profile_photo = imgRes[0].url;
-      }
-    }
+    setIsLoading(true);
     
-    await updateUser({
-      userId: user.id,
-      username: values.username,
-      name:values.name,
-      bio: values.bio,
-      image: values.profile_photo ,
-      path: pathname
-    })
+    try {
+      const blob = values.profile_photo;
+      const hasImageChanged = isBase64Image(blob);
 
-    if(pathname === '/profile/edit'){
-      router.back();
+      if (hasImageChanged) {
+        const imgRes = await startUpload(files);
+
+        if (imgRes && imgRes[0].url) {
+          values.profile_photo = imgRes[0].url;
+        }
+      }
+
+      await updateUser({
+        userId: user.id,
+        username: values.username,
+        name: values.name,
+        bio: values.bio,
+        image: values.profile_photo,
+        path: pathname
+      });
+
+      if (pathname === '/profile/edit') {
+        router.back();
+      } else {
+        router.push('/');
+      }
+    } catch (error:any) {
+      throw new Error(`Failed to onboarding post: ${error.message}`)
+    } finally {
+      setIsLoading(false); 
     }
-    else{
-      router.push('/');
-    }
-  }
+  };
 
   const handleImage= (e: ChangeEvent<HTMLInputElement>, fieldChange: (value:string) => void) => {
     e.preventDefault();
@@ -207,8 +216,8 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
             
           )}
         />
-        <Button type="submit" className='bg-dark-1 hover:bg-gray-500 text-light-1'>
-          Submit
+        <Button type="submit" className='bg-dark-1 hover:bg-gray-500 text-light-1' disabled={isLoading}>
+          {isLoading ? "Submiting" : "Submit"}
         </Button>
       </form>
     </Form>

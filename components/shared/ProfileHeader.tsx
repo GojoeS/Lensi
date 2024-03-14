@@ -2,6 +2,7 @@ import Image from "next/image"
 import FollowButton from "../forms/FollowButton"
 import { Button } from "../ui/button"
 import Link from "next/link"
+import AccountStats from "../cards/AccountStats"
 
 interface Props{
   accountId:string,
@@ -32,45 +33,39 @@ const ProfileHeader = ({
   return (
     <div className="flex w-full flex-col justify-start">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="relative h-20 w-20 object-cover">
-            <Image 
-              src={imgUrl}
-              alt="Profile Image"
-              fill
-              className="rounded-full object-cover shadow-2xl"
-            />
-          </div>
-
-          <div className="flex-1">
-            <h2 className="text-left text-heading3-bold">{name}</h2>
-            <p className="text-base-medium text-gray-1">@{username}</p>
-          </div>
-          <div className="flex gap-5">
-            <div className="flex flex-col items-center justify-center">
-              <p>{postLength}</p>
-              <p>Post{postLength > 1 && "s"}</p>
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-3 w-full max-md:w-fit">
+            <div className="relative h-[70px] w-[70px] object-cover">
+              <Image 
+                src={imgUrl}
+                alt="Profile Image"
+                fill
+                className="rounded-full object-cover shadow-lg"
+              />
             </div>
-            <div className="flex flex-col items-center justify-center">
-              <p>{follower.length}</p>
-              <p>Follower</p>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <p>{following.length}</p>
-              <p>Following</p>
+            <div className="flex-1 max-md:hidden">
+              <h2 className="text-left text-heading3-bold max-lg:text-heading4-bold">@{username}</h2>
+              <p className="text-base-medium text-gray-1">{name}</p>
             </div>
           </div>
+          <AccountStats postLength={postLength} follower={follower.length} following={following.length}/>
         </div>
       </div>
-      <p className="mt-6 max-w-lg text-base-regular">{bio}</p>
+      <div className="flex-1 mb-2 mt-4 gap-4 flex flex-col">
+        <div className="md:hidden">
+          <h2 className="text-left text-heading3-bold max-lg:text-heading4-bold">@{username}</h2>
+          <p className="text-base-medium text-gray-1">{name}</p>
+        </div>
+        <p className="text-base-regular">{bio}</p>
+      </div>
       { authUserId !== visitedId ?
         <FollowButton authUser={authUserId} accountId={accountId}  />
         : 
-        <Link href="/edit-profile" className="w-full flex justify-center border border-light-2 items-center p-2 bg-light-2 hover:border hover:bg-light-1 rounded-lg">
+        <Link href="/edit-profile" className="w-full flex justify-center border  border-light-2 items-center p-3 bg-light-2 hover:border hover:bg-light-1 rounded-lg my-2">
           Edit Profile
         </Link>
       }
-      <div className="mt-12 h-0.5 w-full bg-light-2" />
+      <div className="my-4 h-0.5 w-full bg-light-2" />
     </div>
   )
 }

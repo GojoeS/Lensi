@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Form,
   FormControl,
@@ -27,6 +27,8 @@ interface Props{
 
 const Comment = ({ postId, currentUserImg, currentUserId}:Props) => {
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -38,39 +40,59 @@ const Comment = ({ postId, currentUserImg, currentUserId}:Props) => {
   })
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-    await addComent({
-      parentId: postId, 
-      text: values.comment, 
-      author: currentUserId, 
-      path: pathname
-    })
+    try {
+      setIsLoading(true);
+      await addComent({
+        parentId: postId, 
+        text: values.comment, 
+        author: currentUserId, 
+        path: pathname
+      })
+      
+    } catch (error:any) {
+      throw new Error(`Failed to send comment: ${error.message}`)
+    } finally{
+      setIsLoading(false);
+      form.reset();
+    }
   }
 
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='flex w-full border justify-between items-center'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='flex w-full justify-between border-b items-center mb-2'>
           <FormField 
             control={form.control}
             name="comment"
             render={({field }) => (
               <FormItem className='flex w-full items-center gap-2'>
                 <FormLabel>
-                  <Image src={currentUserImg} alt="your profile photo" width={30} height={24}/>
+                  <div>
+                    <Image 
+                      src={currentUserImg} 
+                      alt="your profile photo" 
+                      width={30} 
+                      height={30}
+                      className='rounded-full'
+                    />
+
+                  </div>
                 </FormLabel>
-                <FormControl>
-                  <Input 
-                    type="text"
-                    placeholder='Comment...'
-                    className=''
-                    {...field}
-                  />
-                </FormControl>
+                <div className='pb-4 pt-2 w-full pr-2'>
+                  <FormControl>
+                    <Input 
+                      type="text"
+                      placeholder='Comment... (max. 200 characters)'   
+                      className='text-normal'                
+                      {...field}
+                    />
+                  </FormControl>
+                </div>
               </FormItem>
             )}
           />
-          <Button type="submit" className='bg-dark-1 hover:bg-gray-500 text-light-1'>
-            Send
+          <Button type="submit" className='bg-dark-1 hover:bg-gray-500 text-light-1' disabled={isLoading}>
+            {isLoading ? "Sending" : "Send"}
           </Button>
         </form>
       </Form>

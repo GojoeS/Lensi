@@ -26,6 +26,8 @@ import { createPost } from '@/lib/actions/post.action'
 
 const PostFeed = ({userId} : {userId: string}) => {
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [files, setFiles] = useState<File[]>([])
   const { startUpload } = useUploadThing("media")
   const pathname = usePathname()
@@ -64,27 +66,33 @@ const PostFeed = ({userId} : {userId: string}) => {
   }
 
   const onSubmit = async (values: z.infer<typeof PostValidation>) => {
-    const blob = values.image;
+    try{
+      setIsLoading(true)
+      const blob = values.image;
 
-    const hasImageChanged = isBase64Image(blob);
-    if(hasImageChanged){
-      const imgRes = await startUpload(files)
+      const hasImageChanged = isBase64Image(blob);
+      if(hasImageChanged){
+        const imgRes = await startUpload(files)
 
-      if(imgRes && imgRes[0].url){
-        values.image = imgRes[0].url;
+        if(imgRes && imgRes[0].url){
+          values.image = imgRes[0].url;
+        }
       }
+      
+      await createPost({ 
+        image: values.image, 
+        caption: values.caption, 
+        tag: values.tag,
+        author: userId, 
+        path: pathname,
+      })
+      
+    } catch (error:any){
+      throw new Error(`Failed to post feed: ${error.message}`)
+    } finally{
+      setIsLoading(false)
+      router.push("/");
     }
-    
-    await createPost({ 
-      image: values.image, 
-      caption: values.caption, 
-      tag: values.tag,
-      author: userId, 
-      path: pathname,
-    })
-    
-    console.log("test oii")
-    router.push("/");
   }
 
   return (
@@ -162,8 +170,8 @@ const PostFeed = ({userId} : {userId: string}) => {
             
           )}
         />
-        <Button type="submit"className='bg-dark-1 hover:bg-gray-500 text-light-1'>
-          Post
+        <Button type="submit"className='bg-dark-1 hover:bg-gray-500 text-light-1' disabled={isLoading}>
+          {isLoading? "Posting" : "Post"}
         </Button>
       </form>
     </Form>

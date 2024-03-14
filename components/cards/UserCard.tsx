@@ -31,8 +31,8 @@ const UserCard = ({
           className="rounded-full"
         />
         <div className="flex-1 text-ellipsis">
-          <p className="font-semibold">@{username}</p>
-          <p className="text-small-medium text-gray-1">{name}</p>
+          <p className="font-semibold text-[16.5px]">@{username}</p>
+          <p className="text-small-medium text-[16px] text-gray-1">{name}</p>
         </div>
       </div>
 

@@ -34,7 +34,7 @@ async function Page({ params }: {params: {id: string}}) {
         following={plainUserInfo.following}
       />
 
-      <div className="mt-9">
+      <div className="my-2">
         <Tabs defaultValue="feeds" className="w-full">
           <TabsList className="tab">
             {profileTabs.map((tab) => (

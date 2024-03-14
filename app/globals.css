@@ -16,7 +16,6 @@
     justify-content: center;
     padding: 120px 24px 160px 24px;
     pointer-events: none;
-
   }
 
   .gradient {
@@ -44,7 +43,6 @@
     opacity: 0.15;
   }
   
-
   /* Head Text */
   .head-text {
     @apply text-heading2-bold text-dark-1;
@@ -60,27 +58,13 @@
     @apply text-center !text-base-regular text-light-3;
   }
 
-  /* Community Card */
-  .community-card {
-    @apply w-full rounded-lg bg-dark-3 px-4 py-5 sm:w-96;
-  }
-
-  .community-card_btn {
-    @apply rounded-lg bg-primary-500 px-5 py-1.5 text-small-regular !text-light-1 !important;
-  }
-
-  /* thread card  */
-  .thread-card_bar {
-    @apply relative mt-2 w-0.5 grow rounded-full bg-neutral-800;
-  }
-
   /* User card */
   .user-card {
     @apply flex flex-col justify-between gap-4 max-xs:rounded-xl max-xs:bg-dark-3 max-xs:p-4 xs:flex-row xs:items-center;
   }
 
   .user-card_avatar {
-    @apply flex flex-1 items-start justify-start gap-3 xs:items-center;
+    @apply flex flex-1 items-start justify-start gap-2 xs:items-center;
   }
 
   .user-card_btn {
@@ -97,10 +81,12 @@
 
   .topbar {
     @apply fixed top-0 z-30 flex w-full items-center justify-between bg-light-1 px-6 py-3;
+    box-shadow: 1px -5px 15px 2px rgba(0, 0, 0, 0.192);
   }
 
   .bottombar {
-    @apply fixed bottom-0 z-10 w-full rounded-t-3xl bg-glassmorphism p-4 backdrop-blur-lg xs:px-7 md:hidden;
+    @apply fixed bottom-0 z-10 w-full bg-light-1  p-4 backdrop-blur-sm xs:px-7 md:hidden;
+    box-shadow: -1px 5px 15px 2px rgba(0, 0, 0, 0.192);
   }
 
   .bottombar_container {
@@ -112,15 +98,19 @@
   }
 
   .leftsidebar {
-    @apply sticky left-0 top-0 z-20 flex h-screen w-[280px] flex-col justify-between overflow-auto bg-light-1 pb-5 pt-28 max-md:hidden bg-opacity-50 shadow-xl;
+    @apply sticky left-0 top-0 z-20 flex h-screen w-[280px] max-lg:w-fit flex-col justify-between overflow-auto bg-light-1 pb-5 pt-28 max-md:hidden bg-opacity-50 shadow-xl;
   }
 
   .leftsidebar_link {
-    @apply relative flex justify-start gap-4 rounded-lg p-4 pl-7;
+    @apply relative flex max-lg:justify-center justify-start gap-4 rounded-full p-4 pl-6 max-lg:p-4 max-lg:w-16 max-lg:h-16;
   }
 
   .left-active{
-    box-shadow: 2px 15px 10px -14px rgba(0, 0, 0, 0.192);
+    box-shadow: inset 2px 15px 10px -14px rgba(0, 0, 0, 0.192);
+  }
+
+  .bottom-active{
+    box-shadow: inset 2px 13px 15px -10px rgba(0, 0, 0, 0.192);
   }
 
   .pagination {
@@ -128,7 +118,14 @@
   }
 
   .rightsidebar {
-    @apply sticky right-0 top-0 z-20 flex h-fit w-fit flex-col justify-between gap-12 overflow-auto py-20 mr-20 max-xl:hidden;
+    @apply sticky right-0 top-0 z-20 flex h-fit w-fit flex-col justify-between gap-8 overflow-auto py-[105px] mr-10 max-xl:hidden;
+  }
+
+  .post-card{
+    @apply flex bg-white rounded-lg shadow-lg py-4 px-5 max-md:px-3 min-w-[350px] 
+    max-w-[600px] justify-center items-center
+
+    
   }
 }
 
@@ -172,7 +169,27 @@
 
 /* Tab */
 .tab {
-  @apply flex min-h-[50px] flex-1 items-center gap-3 bg-light-2 text-dark-2 data-[state=active]:bg-[#0e0e12] data-[state=active]:text-light-2 !important;
+  @apply flex min-h-[50px] flex-1 items-center gap-3 bg-light-1 text-dark-2 data-[state=active]:bg-[#0e0e12] data-[state=active]:text-light-2 !important;
+}
+
+.tab-container{
+  @apply mt-9 grid grid-cols-3 max-sm:gap-1 gap-4 w-full px-1
+}
+
+.image-container{
+  @apply relative aspect-square h-auto w-auto shadow-lg
+}
+
+.rightsidebar-container{
+  @apply flex flex-1 gap-3 flex-col justify-start
+}
+
+.delete-img-container{
+  @apply w-8 h-8 bg-red-100 rounded-full flex items-center justify-center
+}
+
+.text-normal{
+  @apply max-md:text-[14px]
 }
 
 .no-focus {
