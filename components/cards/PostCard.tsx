@@ -57,8 +57,6 @@ const PostCard = ({
     return length;
   }
 
-  console.log(replyLength())
-
   return (
     <article>
       <div className='post-card'>
