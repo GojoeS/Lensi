@@ -71,8 +71,8 @@ children, params
           post.like.length > 0 && (
             <p className='font-semibold'>{post.like.length} like{post.like.length > 1 && "s"}</p>
           )}
-          <p className='text-normal'>{plainpost.caption}</p>
-          {plainpost.tag && <p className='text-blue text-normal'>{plainpost.tag}</p>}       
+          <p className='text-normal'>{plainpost.caption && plainpost.caption}</p>
+          {plainpost.tag && <p className='text-blue text-normal'>{plainpost.tag && plainpost.tag}</p>}       
           <p className='text-gray-500 font-[500]'>{addCreatedDate(plainpost.createdAt)}</p>
           {children}
           {

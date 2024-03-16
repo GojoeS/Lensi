@@ -92,7 +92,7 @@ const replyComment = async({
               <Image src='/icons/comment.svg' alt="like button" width={24} height={24} />   
             </Link>
           </div>
-          <h3>{caption}</h3>
+          <h3>{caption && caption}</h3>
           <p className='text-blue'>{tag && tag}</p>  
           <div>
             

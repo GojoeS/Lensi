@@ -2,8 +2,8 @@ import * as z from 'zod'
 import { isBase64Image } from "@/lib/utils";
 
 export const PostValidation = z.object({
-  caption: z.string().min(0).max(300),
   image: z.string().min(1).refine(isBase64Image, { message: 'Must be a valid image' }),
+  caption: z.string(),
   tag: z.string(),
   accountId: z.string()
 })

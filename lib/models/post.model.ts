@@ -5,8 +5,12 @@ const postSchema = new mongoose.Schema({
     type: String, 
     required: true
   },
-  caption: { type: String, required: true},
-  tag:{type: String},
+  caption: { 
+    type: String
+  },
+  tag:{ 
+    type: String
+  },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

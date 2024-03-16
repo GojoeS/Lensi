@@ -100,7 +100,7 @@ const PostCard = ({
             <p className='font-semibold'>{like.length} like{like.length > 1 && "s"}</p>
             )
           }
-          <p className='text-normal'>{caption}</p>
+          <p className='text-normal'>{caption && caption}</p>
           <p className='text-blue text-normal'>{tag && tag}</p>
           {
             comment.length > 0 && (

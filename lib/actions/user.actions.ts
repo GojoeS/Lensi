@@ -56,6 +56,20 @@ export async function fetchUser(userId: string){
     connectToDB();
 
     return await User.findOne({ id: userId })
+    .populate({
+      path:"follower",
+      populate:{
+        path: "_id",
+        model: User
+      }
+    })
+    .populate({
+      path:"following",
+      populate:{
+        path: "_id",
+        model: User
+      }
+    })
 
   } catch (error: any){
     throw new Error(`Failed to fetch user: ${error.message}`)
@@ -220,6 +234,7 @@ export async function updateFollow({ authUser, accountId, path}: {authUser:strin
     if(isFollowing){
       currentUser.following.pull(visitedAccount._id)
       visitedAccount.follower.pull(currentUser._id)
+      
     }
     else{
       currentUser.following.push(visitedAccount._id)
@@ -230,6 +245,7 @@ export async function updateFollow({ authUser, accountId, path}: {authUser:strin
     await visitedAccount.save()
 
     revalidatePath(path)
+    return isFollowing
   } catch (error:any) {
     throw new Error(`Failed to update follow: ${error.message}`)
   }
@@ -241,7 +257,10 @@ export async function followCheck({ authUser, accountId }: { authUser:string, ac
     const currentUser = await User.findOne({id: authUser})
     const visitedAccount = await User.findById(accountId)
     
-    return currentUser.following.includes(visitedAccount._id);
+    const isFollowing = currentUser.following.some((following:any) => following.equals(visitedAccount._id));
+
+    console.log(isFollowing)
+    return {isFollowing}
   } catch (error:any) {
     throw new Error(`Error adding checking like: ${error.message}`)
   }

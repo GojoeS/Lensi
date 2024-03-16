@@ -36,8 +36,8 @@ const PostFeed = ({userId} : {userId: string}) => {
   const form = useForm({
     resolver: zodResolver(PostValidation),
     defaultValues:{
-      caption:"",
       accountId: userId,
+      caption:"",
       image: "",
       tag: "",
     }
@@ -58,7 +58,6 @@ const PostFeed = ({userId} : {userId: string}) => {
       fileReader.onload = async(e) => {
         const imageDataUrl = e.target?.result?.toString() || "";
         fieldChange(imageDataUrl)
-
       }
 
       fileReader.readAsDataURL(file)

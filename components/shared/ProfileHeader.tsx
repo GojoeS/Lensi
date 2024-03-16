@@ -14,7 +14,7 @@ interface Props{
   postLength: number,
   follower:string[],
   following:string[],
-  visitedId:string
+  visitedId:string,
 }
 
 const ProfileHeader = ({
@@ -27,7 +27,7 @@ const ProfileHeader = ({
   postLength,
   follower,
   following,
-  visitedId
+  visitedId,
 } :Props) => {
 
   return (
@@ -48,7 +48,7 @@ const ProfileHeader = ({
               <p className="text-base-medium text-gray-1">{name}</p>
             </div>
           </div>
-          <AccountStats postLength={postLength} follower={follower.length} following={following.length}/>
+          <AccountStats postLength={postLength} follower={follower} following={following}/>
         </div>
       </div>
       <div className="flex-1 mb-2 mt-4 gap-4 flex flex-col">
@@ -59,7 +59,7 @@ const ProfileHeader = ({
         <p className="text-base-regular">{bio}</p>
       </div>
       { authUserId !== visitedId ?
-        <FollowButton authUser={authUserId} accountId={accountId}  />
+        <FollowButton authUser={authUserId} accountId={accountId}/>
         : 
         <Link href="/edit-profile" className="w-full flex justify-center border  border-light-2 items-center p-3 bg-light-2 hover:border hover:bg-light-1 rounded-lg my-2">
           Edit Profile
