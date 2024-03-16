@@ -1,20 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
-import { likePost } from '@/lib/actions/like.action'
 import { addCreatedDate } from '@/lib/utils'
 import Like from '../forms/Like'
 import DeleteButtonPost from '../shared/DeleteButtonPost'
+import { deleteComment, fetchComment, fetchCommentById } from '@/lib/actions/comment.action'
 
 interface Props{
   id: string,
   currentUserId: string,
   comment: {
-    author: {
-      image:string,
-      name:string,
-      text:string
-    }
+    _id: string,
+    reply: string
   }[],
   image: string,
   caption: string,
@@ -52,6 +48,17 @@ const PostCard = ({
   const plainPostId = JSON.parse(JSON.stringify(id));
   const plainUser = JSON.parse(JSON.stringify(currentUserId));
 
+  const replyLength = () =>{
+    let length = 0
+    comment.forEach(comment => {
+      length++; // Increment for the comment itself
+      length += comment.reply.length; // Add the length of replies
+    });
+    return length;
+  }
+
+  console.log(replyLength())
+
   return (
     <article>
       <div className='post-card'>
@@ -65,13 +72,20 @@ const PostCard = ({
                   width={40}
                   height={40}
                   className='rounded-full'
+                  style={{ width: "auto", height: "auto" }}
                 />
                 <p className='font-bold'>{author.name}</p>
               </div>
             </Link>
             { author._id == currentUserId && <DeleteButtonPost postId={plainPostId} /> }
           </div>
-          <Image src={image} alt="post's image" width={500} height={500}/>
+          <Image 
+            src={image} 
+            alt="post's image" 
+            width={500} 
+            height={500}
+            style={{ width: "auto", height: "auto" }}
+          />
           <div className='flex gap-3'>
             <Like 
               postId={plainPostId}
@@ -93,7 +107,7 @@ const PostCard = ({
           {
             comment.length > 0 && (
               <Link href={`/post/${id}`}>
-                <p>{`View all ${comment.length} comments `}</p>
+                <p>{`View all ${replyLength()} comments `}</p>
               </Link>
             )
           }

@@ -99,3 +99,9 @@ export async function deleteComment({commentId, parentId, path}: {commentId: str
     throw new Error(`Failed to delete comments: ${error.message}`)
   }
 }
+
+export async function fetchReplyLength({commentId}:{commentId:string}){
+  const reply = await Comment.findById(commentId)
+
+  console.log(reply)
+}

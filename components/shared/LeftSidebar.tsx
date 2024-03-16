@@ -16,7 +16,13 @@ const LeftSidebar = () => {
     <section className="custom-scrollbar leftsidebar">
       
       <Link href="/" className="flex items-center pl-12 mt-[-70px] pb-12  max-lg:hidden">
-        <Image src="/logo-light.png" alt="logo" width={70} height={78} />
+        <Image 
+          src="/logo-light.png" 
+          alt="logo" 
+          width={70} 
+          height={78} 
+          style={{ width: "auto", height: "auto" }}
+          />
       </Link>
       <Link href="/" className="flex items-center mt-[-70px] pb-12 lg:hidden justify-center">
         <Image src="/lensi-black.png" alt="logo" width={40} height={40} />

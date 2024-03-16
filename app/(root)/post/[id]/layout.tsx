@@ -50,7 +50,12 @@ children, params
             </Link>
             { plainUserInfo._id === plainpost.author._id && <DeleteButtonPost postId={plainpost._id} /> }
           </div>
-          <Image src={plainpost.image} alt="post's image" width={500} height={500} className='w-full'/>
+          <Image 
+            src={plainpost.image} 
+            alt="post's image" 
+            width={500} 
+            height={500} 
+            className='w-full'/>
           <div className='flex gap-3'>
             <Like 
               postId={plainpost._id}

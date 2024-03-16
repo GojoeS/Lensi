@@ -59,7 +59,7 @@ const Reply = ({ commentId, currentUserImg, currentUserId}:Props) => {
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='flex w-full border justify-between items-center'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='comment-reply-container'>
           <FormField 
             control={form.control}
             name="reply"

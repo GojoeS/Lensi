@@ -44,6 +44,11 @@ export async function fetchPosts(){
     const postsQuery = Post.find({})
       .sort({ createdAt: 'desc'})
       .populate({path: 'author', model: User})
+      .populate({
+        path: "comment",
+        model: Comment,
+        select: "reply _id"
+      })
 
     const posts = await postsQuery.exec();
 

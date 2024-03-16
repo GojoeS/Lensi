@@ -24,5 +24,5 @@ DONE
 <!-- [] rapihin layout comment dan reply kalo text nya banyak
   [] kecilin textnya sedikit kalo di md/sm screen -->
 <!-- [] rapihin placement logo lensi dan bikin logo -->
+<!-- [] tambahin total comment + reply di postCard -->
 [] rapihin tailwind
-[] tambahin total comment + reply di postCard

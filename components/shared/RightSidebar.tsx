@@ -39,6 +39,7 @@ const RightSidebar = async() => {
                 src={plainUserInfo.image}
                 alt="Profile Image"
                 fill
+                sizes="auto"
                 className="rounded-full object-cover shadow-2xl"
               />
             </div>
