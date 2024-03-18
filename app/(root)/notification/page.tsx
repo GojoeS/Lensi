@@ -39,24 +39,28 @@ const Page = async() => {
                         <>
                           <div className="flex gap-2" >
                             <div className="flex gap-2 flex-1">
-                              <Image 
-                                src={activity.author ? activity.author.image : activity._id.image }
-                                alt="Profile Picture"
-                                width={20}
-                                height={20}
-                                className="rounded-full object-cover"
-                              />
+                              <div className="relative h-[25px] w-[25px] object-cover">
+                                <Image 
+                                  src={ activity.author ? activity.author.image : activity._id.image }
+                                  alt="Profile Image"
+                                  fill
+                                  className="rounded-full object-cover shadow-lg"
+                                />
+                              </div>
                               <p className="h-6 overflow-hidden">{activity.author ? activity.author.name : activity._id.name} {activity.text ? "commented your post" : activity.author ? "liked your post" : "follows you"}</p>                            
                             </div>
                             <p className="text-gray-400 font-medium">{getTimePassedString(activity.createdAt)}</p>
                           </div>
-                          {activity.parentId && <Image 
-                            src={activity.parentId.image}
-                            alt="Profile Picture"
-                            width={30}
-                            height={30}
-                            className="rounded-full object-cover ml-2"
-                          />}
+                          {activity.parentId && 
+                            <div className="relative h-[30px] w-[30px] object-cover">
+                              <Image 
+                                src={activity.parentId.image}
+                                alt="Profile Image"
+                                fill
+                                className="rounded-full object-cover shadow-lg"
+                              />
+                            </div>
+                          }
                         </>
                       }
                     </article>

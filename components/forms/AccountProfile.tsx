@@ -82,6 +82,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
         router.back();
       } else {
         router.push('/');
+        router.refresh()
       }
     } catch (error:any) {
       throw new Error(`Failed to onboarding post: ${error.message}`)

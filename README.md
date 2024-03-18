@@ -26,4 +26,5 @@ DONE
 <!-- [] rapihin placement logo lensi dan bikin logo -->
 <!-- [] tambahin total comment + reply di postCard -->
 [] rapihin tailwind
-[]Error: Failed to post feed: Failed to Post: Post validation failed: caption: Path `caption` is required. when upload not using caption
+[] Error: Failed to post feed: Failed to Post: Post validation failed:    caption: Path `caption` is required. when upload not using caption
+[] failed to follow when user dont have bio
