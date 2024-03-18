@@ -14,6 +14,7 @@ const FollowButton = ({authUser, accountId}: Props) => {
 
   const [isFollowing, setIsFollowing] = useState(false);
   const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchFollowStatus = async () => {
@@ -25,18 +26,25 @@ const FollowButton = ({authUser, accountId}: Props) => {
   });
   
   const handleFollow = async({ authUser, accountId }:Props) => {
-    await updateFollow({
-      authUser: authUser, 
-      accountId: accountId,
-      path: pathname,
-    })
+    try {
+      setIsLoading(true);
+      await updateFollow({
+        authUser: authUser, 
+        accountId: accountId,
+        path: pathname,
+      })      
+    } catch (error:any) {
+      throw new Error(`error update Follow: ${error.message}`)
+    } finally{
+      setIsLoading(false);
+    }
     
   }
   return (
     <Button size="none" variant={isFollowing ? `default` : `secondary`} onClick={() => handleFollow({authUser, accountId})} 
       className='border py-2'
-    >
-      
+      disabled={isLoading}
+    >     
       {isFollowing ? 'Followed' : 'Follow'}
     </Button>
   )

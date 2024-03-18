@@ -259,7 +259,6 @@ export async function followCheck({ authUser, accountId }: { authUser:string, ac
     
     const isFollowing = currentUser.following.some((following:any) => following.equals(visitedAccount._id));
 
-    console.log(isFollowing)
     return {isFollowing}
   } catch (error:any) {
     throw new Error(`Error adding checking like: ${error.message}`)

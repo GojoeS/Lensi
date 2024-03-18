@@ -103,5 +103,4 @@ export async function deleteComment({commentId, parentId, path}: {commentId: str
 export async function fetchReplyLength({commentId}:{commentId:string}){
   const reply = await Comment.findById(commentId)
 
-  console.log(reply)
 }
