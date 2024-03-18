@@ -1,12 +1,13 @@
 "use server"
 
 import { connectToDB } from "../mongoose";
-import Post from "../models/post.model"
+
 import User from "../models/user.model";
 import { revalidatePath } from "next/cache";
 import Reply from "../models/reply.model";
 import Comment from "../models/comment.model";
 import Like from "../models/like.model";
+import Post from "../models/post.model";
 
 interface Props{
   image: string,

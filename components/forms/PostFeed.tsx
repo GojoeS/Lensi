@@ -37,7 +37,7 @@ const PostFeed = ({userId} : {userId: string}) => {
     resolver: zodResolver(PostValidation),
     defaultValues:{
       accountId: userId,
-      caption:"",
+      caption: "",
       image: "",
       tag: "",
     }
