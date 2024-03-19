@@ -37,9 +37,9 @@ const FollowButton = ({authUser, accountId}: Props) => {
       throw new Error(`error update Follow: ${error.message}`)
     } finally{
       setIsLoading(false);
-    }
-    
+    }    
   }
+  
   return (
     <Button size="none" variant={isFollowing ? `default` : `secondary`} onClick={() => handleFollow({authUser, accountId})} 
       className='border py-2'

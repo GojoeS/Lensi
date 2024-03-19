@@ -84,7 +84,7 @@ const PostCard = ({
             height={500}
             style={{ width: "auto", height: "auto" }}
           />
-          <div className='flex gap-3'>
+          <div className='flex gap-3 mt-2'>
             <Like 
               postId={plainPostId}
               authorId={plainUser}
@@ -100,8 +100,8 @@ const PostCard = ({
             <p className='font-semibold'>{like.length} like{like.length > 1 && "s"}</p>
             )
           }
-          <p className='text-normal'>{caption && caption}</p>
-          <p className='text-blue text-normal'>{tag && tag}</p>
+          {caption && <p className='text-normal'>{caption}</p>}
+          {tag && <p className='text-blue text-normal'>{tag}</p>}
           {
             comment.length > 0 && (
               <Link href={`/post/${id}`}>

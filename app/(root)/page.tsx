@@ -28,7 +28,7 @@ export default async function Home() {
             <>
             {
               result?.posts.map((post) => {
-                if(plainUserInfo._id == post.author._id || userInfo.following.some((follow:any) => follow._id.toString() === post.author._id.toString()) ){
+                if(plainUserInfo._id == post.author._id || userInfo.following.some((follow:any) => follow._id._id.toString() === post.author._id.toString()) ){
                   totalPost += 1
                   return(
                     <PostCard 
